@@ -132,11 +132,10 @@ let artworkShowcase = {
             fileReader.onload = function () {
                 let gifData = gifuct.parseGIF(fileReader.result);
                 let gifs = gifuct.decompressFrames(gifData, true);
-                createGifs(
+                as_createGifs(
                     zip, // Send JSZip object for zipping the gifs
                     gifs, // Send the frames used for cropping
-                    1, // Which gif is cropping (big image or small image)
-                    2 // How many gifs need to be created
+                    1 // Which gif is cropping (big image or small image)
                 );
             }
 
@@ -145,7 +144,7 @@ let artworkShowcase = {
     },
 }
 
-function createGifs(zip, gifs, currentGif, maxGifs) {
+function as_createGifs(zip, gifs, currentGif) {
     // Recursive function for cropping and zipping gifs
     let gifjs = new GIF({
         workers: 2,
@@ -164,13 +163,14 @@ function createGifs(zip, gifs, currentGif, maxGifs) {
                 }
             );
 
-            if (currentGif != maxGifs)
-                createGifs(zip, gifs, currentGif + 1, maxGifs);
+            if (currentGif != 2)
+                as_createGifs(zip, gifs, currentGif + 1);
             else {
+                inputImage.setStatusMsg("Creating zip file, please wait...");
                 zip.generateAsync({
                     type: "blob"
                 }).then(function (content) {
-                    download(content, `${inputImage.file.name}_${new Date().getTime()}.zip`);
+                    download(content, `${inputImage.file.name}_as_${new Date().getTime()}.zip`);
                     inputImage.setStatusMsg("Done");
                 });
             }
@@ -180,7 +180,7 @@ function createGifs(zip, gifs, currentGif, maxGifs) {
     });
 
     gifjs.on('progress', function (e) {
-        inputImage.setStatusMsg(`Rendering gif ${currentGif}/${maxGifs} - ${(e*100).toFixed(0)}%`);
+        inputImage.setStatusMsg(`Rendering gif ${currentGif}/2 - ${(e*100).toFixed(0)}%`);
     })
 
     // smallImgHeight is for it not to check everytime if it needs to add hole at the bottom
@@ -193,7 +193,6 @@ function createGifs(zip, gifs, currentGif, maxGifs) {
         temp.imageData(gifs[i].patch);
         background.addCanvas(temp.canvas, gifs[i].dims.left, gifs[i].dims.top);
 
-        // let frame = new CustomCanvas(gifs[0].dims.width, gifs[0].dims.height);
         let frame;
         if (currentGif == 1) {
             frame = new CustomCanvas(artworkShowcase.steamBigWidth, inputImage.height);
@@ -203,7 +202,7 @@ function createGifs(zip, gifs, currentGif, maxGifs) {
             frame.drawImage(background.canvas, artworkShowcase.leftOffset, 0, artworkShowcase.steamSmallWidth,
                 inputImage.height, 0, 0, artworkShowcase.steamSmallWidth, inputImage.height);
         }
-
+        
         gifjs.addFrame(frame.canvas, {
             delay: gifs[i].delay ? gifs[i].delay : gifs[1].delay
         });
@@ -219,7 +218,7 @@ inputImage.selectedImage.onchange = function () {
         if (tabInfo.currentTab == '#artwork') {
             artworkShowcase.loadImage();
             tabInfo.artworkLoaded = true;
-        } else {
+        } else { // #workshop
             workshopShowcase.loadImage();
             tabInfo.workshopLoaded = true;
         }
@@ -229,8 +228,10 @@ inputImage.selectedImage.onchange = function () {
 function testSize() {
     // Get values for the images shown on the Steam Artwork showcase
     // and check if they need to be adjusted
-    let bigImgComputed = Math.round(parseFloat(getComputedStyle(bigImg).height.replace('px', '')));
-    let smallImgComputed = Math.round(parseFloat(getComputedStyle(smallImg).height.replace('px', '')));
+    // let bigImgComputed = Math.round(parseFloat(getComputedStyle(bigImg).height.replace('px', '')));
+    // let smallImgComputed = Math.round(parseFloat(getComputedStyle(smallImg).height.replace('px', '')));
+    let bigImgComputed = getComputedValueFor(artworkShowcase.bigImg, 'height');
+    let smallImgComputed = getComputedValueFor(artworkShowcase.smallImg, 'height');
     if (bigImgComputed !== smallImgComputed) {
         // Because the left bigger picture is easier to adjust and less janky to work with,
         // we're setting the right smaller image to an acceptable size taller than the big one,
@@ -287,10 +288,8 @@ function testSize() {
 function rightSide() {
     // This function is used for creating a hole for the '+N' element if the user
     // has more artwork images uploaded on Steam
-    let bigImgComputed = Math.round(parseFloat(getComputedStyle(artworkShowcase.bigImg).height.replace('px', '')));
-    let rightSizeComputed = Math.round(
-        parseFloat(getComputedStyle(document.getElementById('rightSide')).height.replace('px', ''))) - 12;
-
+    let bigImgComputed = getComputedValueFor(artworkShowcase.bigImg, 'height')
+    let rightSizeComputed = getComputedValueFor(document.getElementById('rightSide'), 'height') - 12;
     if (bigImgComputed < rightSizeComputed) {
         artworkShowcase.smallTest--;
         artworkShowcase.smallCanvas.setHeight(artworkShowcase.smallTest);
@@ -335,6 +334,10 @@ function toggleSmall() {
         artworkShowcase.steamSmallWidth, inputImage.height, 0, 0, artworkShowcase.steamSmallWidth, inputImage.height);
 
     artworkShowcase.smallImg.src = artworkShowcase.smallCanvas.toDataURL(inputImage.file.type, 1);
+}
+
+function getComputedValueFor(element, parameter) { // Function for extracting pixel value from computed element's style
+    return Math.round(parseFloat(getComputedStyle(element)[parameter].replace('px', '')));
 }
 
 class CustomCanvas {

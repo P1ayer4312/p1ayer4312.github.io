@@ -22,29 +22,37 @@ if (window.location.href.includes("#workshop")) {
     rightPanel.artworkInfo.show();
 }
 
-document.getElementById("workshopLink").onclick = () => {
-    artworkArea.style.setProperty("display", "none");
-    workshopArea.style.removeProperty("display");
-    workshopShowcase.fixHeight();
-    tabInfo.currentTab = "#workshop";
-    rightPanel.artworkInfo.hide();
-    rightPanel.workshopInfo.show();
-    if (!tabInfo.workshopLoaded) {
-        workshopShowcase.loadImage();
-        tabInfo.workshopLoaded = true;
+window.onhashchange = function () {
+    if (window.location.href.includes("#workshop")) {
+        artworkArea.style.setProperty("display", "none");
+        workshopArea.style.removeProperty("display");
+        workshopShowcase.fixHeight();
+        tabInfo.currentTab = "#workshop";
+        rightPanel.artworkInfo.hide();
+        rightPanel.workshopInfo.show();
+        if (!tabInfo.workshopLoaded) {
+            workshopShowcase.loadImage();
+            tabInfo.workshopLoaded = true;
+        }
+    } else { // #artwork
+        workshopArea.style.setProperty("display", "none");
+        artworkArea.style.removeProperty("display");
+        tabInfo.currentTab = "#artwork";
+        rightPanel.workshopInfo.hide();
+        rightPanel.artworkInfo.show();
+        if (!tabInfo.artworkLoaded) {
+            artworkShowcase.loadImage();
+            tabInfo.artworkLoaded = true;
+        }
     }
 }
 
-document.getElementById("artworkLink").onclick = () => {
-    workshopArea.style.setProperty("display", "none");
-    artworkArea.style.removeProperty("display");
-    tabInfo.currentTab = "#artwork";
-    rightPanel.workshopInfo.hide();
-    rightPanel.artworkInfo.show();
-    if (!tabInfo.artworkLoaded) {
-        artworkShowcase.loadImage();
-        tabInfo.artworkLoaded = true;
-    }
-}
 
-console.log('%cHello', 'color: red; background-image: url("steam/spaghetti.jpg"); width: 300px; height: 300px');
+
+
+// console.log('%cPowered by spaghetti', 
+//     `color: black;
+//     font-weight: bold;
+//     font-size: 20px;
+//     background-image: url("https://raw.githubusercontent.com/P1ayer4312/p1ayer4312.github.io/main/steam-crop/steam/spaghetti.gif"); 
+//     padding: 0 280px 245px 0`);
