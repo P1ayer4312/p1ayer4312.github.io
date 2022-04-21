@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="index.min.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const showNewArray = document.getElementById('showNewArray');
+            showNewArray.addEventListener('mouseenter', () => {
+                showNewArray.focus();
+                showNewArray.select();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>
+                <textarea id="originalItems" cols="30" rows="10" placeholder="Paste JSON array here"></textarea><br>
+                <button onclick="parseString()">Parse</button>
+                <br><br>
+                <textarea id="showNewArray" cols="30" rows="10" placeholder='Click "Generate" to create new JSON object' readonly></textarea><br>
+                <button onclick="generateNewList()">Generate</button><br>
+            </td>
+            <td>
+                <div id="items" style="margin-left: 30px;">
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
