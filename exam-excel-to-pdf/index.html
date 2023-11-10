@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Excel to PDF converter</title>
-</head>
-<body>
-	<p>Client-side script for converting FINKI's exam schedules from Excel to PDF format</p>
-	<input type="file" id="inputFile">
-	<p>Status: <span id="status">Idle</span></p>
-	<script src="./static/bundle.js"></script>
-	<h3>How to use this</h3>
-	<ol>
-		<li>
-			<img src="./static/tutorial.jpg" alt="" style="width: 600px;">
-		</li>
-		<li>Click on "Choose file" and select the Excel file</li>
-		<li>You should get a PDF file in a few seconds</li>
-	</ol>
-	<h3>
-		<a href="https://github.com/P1ayer4312/finki-exam-excel-to-pdf" target="_blank">GitHub Repo</a>
-	</h3>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excel to PDF converter</title>
+    <style>
+      #errorBlock {
+        color: red;
+        border: 1px solid red;
+        border-radius: 2px;
+        padding: 10px 10px;
+        width: fit-content;
+      }
+      #disableColors {
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      Client-side script for converting FINKI's exam schedules from Excel to PDF
+      format
+    </p>
+    <input type="checkbox" id="disableColors" />
+    <label for="disableColors">Disable years colors</label><br />
+    <input type="file" id="inputFile" />
+    <p>Status: <span id="status">Idle</span></p>
+    <div id="errorBlock" style="display: none"></div>
+    <h3>How to use this</h3>
+    <ol>
+      <li>
+        <img src="./static/tutorial.jpg" alt="" style="width: 600px" />
+      </li>
+      <li>Click on "Choose file" and select the Excel file</li>
+      <li>You should get a PDF file in a few seconds</li>
+    </ol>
+    <h3>
+      <a
+        href="https://github.com/P1ayer4312/finki-exam-excel-to-pdf"
+        target="_blank"
+      >
+        GitHub Repo
+      </a>
+    </h3>
+    <script src="./static/bundle.js"></script>
+  </body>
 </html>
