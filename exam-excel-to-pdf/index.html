@@ -18,10 +18,7 @@
     </style>
   </head>
   <body>
-    <p>
-      Client-side script for converting FINKI's exam schedules from Excel to PDF
-      format
-    </p>
+    <p>Client-side script for converting FINKI's exam schedules from Excel to PDF format</p>
     <input type="checkbox" id="disableColors" />
     <label for="disableColors">Disable years colors</label><br />
     <input type="file" id="inputFile" />
@@ -30,18 +27,18 @@
     <h3>How to use this</h3>
     <ol>
       <li>
-        <img src="./static/tutorial.jpg" alt="" style="width: 600px" />
+        <img src="./static/tutorial.jpg" alt="" style="width: 400px" />
       </li>
       <li>Click on "Choose file" and select the Excel file</li>
       <li>You should get a PDF file in a few seconds</li>
     </ol>
+    <h3>Possible issues:</h3>
+    <ul>
+      <li>If it fails to read the file, convert it to older version ".xls" and try again</li>
+      <li>If it fails again, something new broke and pray the creator fixes it</li>
+    </ul>
     <h3>
-      <a
-        href="https://github.com/P1ayer4312/finki-exam-excel-to-pdf"
-        target="_blank"
-      >
-        GitHub Repo
-      </a>
+      <a href="https://github.com/P1ayer4312/finki-exam-excel-to-pdf" target="_blank"> GitHub Repo </a>
     </h3>
     <script src="./static/bundle.js"></script>
   </body>
